@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isLookLeft;
     private bool isWalk;
+    private bool isAction;
 
     public float movimentSpeed;
 
@@ -35,23 +36,47 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
-        if(Input.GetButtonDown("Fire1"))
+        if(Input.GetButtonDown("Fire1") && isAction == false)
         {
+            isAction = true;
             playerAnimator.SetTrigger("Axe");
         }
 
         movimentInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         isWalk = movimentInput.magnitude != 0;
 
-        playerRigidbody2D.velocity = movimentInput * movimentSpeed;
+        if(isAction == false)
+        {
+            playerRigidbody2D.velocity = movimentInput * movimentSpeed;
+        }
+        else
+        {
+            playerRigidbody2D.velocity = Vector2.zero;
+            isWalk = false;
+        }
 
         playerAnimator.SetBool("isWalk", isWalk);
     }
 
     private void Flip()
     {
+        if(isAction ==  true)
+        {
+            return;
+        }
+
         isLookLeft = !isLookLeft;
         float x = transform.localScale.x * -1;
         transform.localScale = new Vector3(x, 1, 1);
+    }
+
+    public void AxeHit()
+    {
+
+    }
+
+    private void ActionDone()
+    {
+        isAction = false;
     }
 }
