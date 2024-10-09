@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     public void AxeHit()
     {
-
+        CoreGame.instance.gameManager.ObjectHit();
     }
 
     private void ActionDone()
